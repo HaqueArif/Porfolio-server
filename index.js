@@ -14,6 +14,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://hoques-portfolio.web.app",
+  "https://portfolio-dashboard-4fc94.web.app",
 ];
 app.use(
   cors({
