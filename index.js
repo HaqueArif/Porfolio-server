@@ -10,10 +10,20 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = ["https://hoques-portfolio.web.app"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://hoques-portfolio.web.app",
+];
 app.use(
   cors({
-    origin: ["https://hoques-portfolio.web.app"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -21,7 +31,10 @@ app.use(express.json());
 
 // MongoDB Connection URL
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 async function run() {
   try {
